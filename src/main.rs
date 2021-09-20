@@ -44,6 +44,13 @@ fn main() -> Result<()> {
         TerminalAgent::new().into(),
     );
 
+    ne.register(
+        &User::new("john.doe".to_string(), UserStatus::Active),
+        &Priority::High,
+        &Severity::Low,
+        TerminalAgent::new().into(),
+    );
+
     // Make and alert
     let a = Alert::new(
         "Owen and SRE".to_string(),
@@ -54,15 +61,9 @@ fn main() -> Result<()> {
     );
 
     // Need a map of AlertTeams to map specific alerts to.
-
-    let notif_users = at.notify().expect("Fuck!");
+    let notif_users = at.notify().expect("Damn it!");
     let notif_errors: Vec<Result<()>> = notif_users.iter().map(|u| ne.notifiy(&u, &a)).collect();
     println!("{:?}", notif_errors);
-
-    // TODO: Missing alert team if one isn't configured
-    //let notif_users = at.expect("Fuck!").notify()?;
-
-    //let notif_errors: Vec<Result<()>> = notif_users.iter().map(|u| na.send_alert(u, &a)).collect();
 
     Ok(())
 }
