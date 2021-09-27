@@ -42,7 +42,12 @@ where
         // TODO: Handle missing user alert preference.
         //self.get(u, a).unwrap().send_alert(u, a)?;
         self.get(u, a)
-            .ok_or(anyhow!("No user configured to handle this alert"))?
+            .ok_or(anyhow!(
+                "User `{}` is not configured to handle this alert Priority `{:?}`, Severity `{:?}`",
+                &u,
+                a.priority,
+                a.severity
+            ))?
             .send_alert(u, a)?;
         Ok(())
     }

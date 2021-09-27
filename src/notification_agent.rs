@@ -41,6 +41,12 @@ impl From<TerminalAgent> for NotificationAgent<Box<dyn Alerter>> {
     }
 }
 
+impl From<EmailAgent> for NotificationAgent<Box<dyn Alerter>> {
+    fn from(a: EmailAgent) -> NotificationAgent<Box<dyn Alerter>> {
+        NotificationAgent { agent: Box::new(a) }
+    }
+}
+
 pub struct TerminalAgent {
     // Some configuration stuff in here
 }
@@ -53,7 +59,7 @@ impl TerminalAgent {
 
 impl Alerter for TerminalAgent {
     fn send_alert(&self, user: &User, alert: &Alert) -> Result<()> {
-        println!("Sending notification to {} : {}", user, alert);
+        println!("Terminal notification to {} : {}", user, alert);
         Ok(())
     }
 }
@@ -70,7 +76,7 @@ impl EmailAgent {
 
 impl Alerter for EmailAgent {
     fn send_alert(&self, user: &User, alert: &Alert) -> Result<()> {
-        println!("Sending notification to {} : {}", user, alert);
+        println!("Email notification to {} : {}", user, alert);
         Ok(())
     }
 }

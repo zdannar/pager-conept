@@ -28,7 +28,6 @@ impl Hash for User {
 
 impl Notify for User {
     fn notify(&self) -> Result<Vec<User>> {
-        println!("Notifying {}", self.username);
         Ok(vec![self.clone()])
     }
 }
