@@ -3,6 +3,8 @@ use crate::schedule::Schedule;
 use crate::user::User;
 use anyhow::Result;
 
+// Alert Team is a superset of User Team.  It can be a mix of multiple teams on
+// diffferent schedules.
 pub struct AlertTeam {
     pub name: String,
     pub members: Vec<Box<dyn Notify>>,

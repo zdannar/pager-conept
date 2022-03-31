@@ -30,16 +30,16 @@ fn main() -> Result<()> {
         ],
         Box::new(RandomSchedule::new()),
     );
-    let mut at = AlertTeam::new(
+    let mut alerttm = AlertTeam::new(
         "Wookies and MGMT".to_string(),
         Box::new(CallAllSchedule::new()),
     );
-    at.push(Box::new(User::new(
+    alerttm.push(Box::new(User::new(
         "El Hefe".to_string(),
         UserStatus::Active,
     )));
 
-    at.push(Box::new(ut));
+    alerttm.push(Box::new(ut));
 
     let mut ne: NotificationEngine<Box<dyn Alerter>> = NotificationEngine::new();
 
@@ -65,7 +65,7 @@ fn main() -> Result<()> {
     );
 
     // Make an alert
-    let a = Alert::new(
+    let alert1 = Alert::new(
         "Owen and SRE".to_string(),
         Priority::High,
         Severity::Critical,
@@ -73,7 +73,7 @@ fn main() -> Result<()> {
         "Rocky is down!".to_string(),
     );
 
-    let a2 = Alert::new(
+    let alert2 = Alert::new(
         "Owen and SRE".to_string(),
         Priority::High,
         Severity::Low,
@@ -83,14 +83,19 @@ fn main() -> Result<()> {
 
     // Need a map of AlertTeams to map specific alerts to.
     println!("Alert #1");
-    let notif_users = at.notify().expect("Damn it!");
-    let mut notif_errors: Vec<Result<()>> =
-        notif_users.iter().map(|u| ne.notifiy(&u, &a)).collect();
-    println!("{:?}", notif_errors);
+    let notif_users = alerttm.notify().expect("Damn it!");
+    let mut notif_errors: Vec<Result<()>> = notif_users
+        .iter()
+        .map(|u| ne.notifiy(&u, &alert1))
+        .collect();
+    println!("Notification Errors: {:?}", notif_errors);
 
     println!("Alert #2");
-    notif_errors = notif_users.iter().map(|u| ne.notifiy(&u, &a2)).collect();
-    println!("{:?}", notif_errors);
+    notif_errors = notif_users
+        .iter()
+        .map(|u| ne.notifiy(&u, &alert2))
+        .collect();
+    println!("Notification Errors {:?}", notif_errors);
 
     Ok(())
 }
